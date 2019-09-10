@@ -1,0 +1,45 @@
+function next() {
+  const selector_banner = '.sm-hc-list > ul > li[class$="active"] + li > a';
+  const selector_list = 'dd[class$="active"] + dd > span';
+  const ele_banner = document.querySelector(selector_banner);
+  if (ele_banner === null) {
+    const ele_dd = document.querySelector(selector_list);
+    if (ele_dd !== null) {
+      ele_dd.click();
+      setTimeout(
+        function () {
+          const sec = get_duration();
+          if (sec !== -1) setTimeout('next()', sec * 1000);
+        }, 60 * 1000);
+    }
+  }
+  else {
+    ele_banner.click();
+    setTimeout(
+      function () {
+        const sec = get_duration();
+        if (sec !== -1) setTimeout('next()', sec * 1000);
+      }, 60 * 1000);
+  }
+}
+
+function get_duration() {
+  const selector_display = 'div.vjs-duration-display';
+  const ele_duration = document.querySelector(selector_display);
+
+  if (ele_duration !== null) {
+    const str_time = ele_duration.textContent.substring(3);
+    const arr_time = str_time.split(":");
+    let sec = 0;
+    for (let i = arr_time.length - 1, t = 1; i >= 0; i--, t *= 60) {
+      sec += arr_time[i] * t;
+    }
+    return sec;
+  }
+  return -1;
+}
+
+(function () {
+  var s = get_duration();
+  if (s !== -1) setTimeout('next()', s * 1000);
+} ());
